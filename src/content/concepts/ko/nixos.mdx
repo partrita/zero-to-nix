@@ -1,0 +1,222 @@
+---
+title: NixOS
+wip: true
+snippet: |
+  [Nix](/concepts/nix) 패키지 관리자를 기반으로 하고 Nix의 핵심 원칙에 따라 안내되는 [Linux](https://www.kernel.org/) 배포판입니다.
+related: ["nix", "nix-language", "nixpkgs"]
+externalSources:
+  [
+    { title: "공식 Nix 웹사이트", href: "https://nixos.org" },
+    { title: "NixOS 위키", href: "https://wiki.nixos.org" },
+    {
+      title: "NixOS",
+      href: "https://en.wikipedia.org/wiki/NixOS",
+      source: { title: "위키백과", href: "https://wikipedia.org" },
+    },
+  ]
+---
+
+_NixOS_는 [Nix]를 기반으로 하는 [Linux] 배포판입니다.
+[`configuration.nix` 파일](#configuration)에서 [Nix 언어][lang]를 사용하여 운영 체제를 [선언적으로 구성][declarative]할 수 있다는 점에서 배포판 중에서 독특합니다.
+그리고 이러한 구성 가능성은 시스템의 [부트 로더][boot], [파일 시스템][filesystem], [창 관리자][window], [커널 모듈][kernel], [OpenSSH]와 같은 서비스 등을 포함하여 매우 깊이 실행됩니다.
+
+근본적으로 [구성 가능한](#configuration) 배포판일 뿐만 아니라 Nix는 NixOS에 [원자적 시스템 업데이트](#atomicity), [시스템 롤백](#rollbacks) 및 강력한 [다중 사용자 지원](#multi-user)과 같은 다양한 고유 [기능](#features)을 제공합니다.
+
+## Nix의 역할
+
+NixOS 시스템의 모든 것은 [Nix 언어][lang]와 NixOS [모듈 시스템](#modules)을 사용하여 구성됩니다.
+[패키지][packages]를 설치하고 임시 방식으로 시스템을 설정하는 대신 네트워킹 스택, 파일 시스템, 사용자 등 원하는 특정 시스템을 [선언][declarative]할 수 있으며 Nix는 필요한 모든 [패키지][packages]를 설치하고 필요한 구성 파일을 제공하며 기타 선언된 변경 사항을 적용하여 처음부터 시스템을 빌드합니다.
+
+## 기능
+
+NixOS는 [APT], [dpkg] 또는 Linux의 다른 옵션 대신 [Nix]를 [패키지 관리자][pkg]로 사용합니다.
+Nix를 통해 NixOS는 다양한 고유 기능을 제공할 수 있습니다.
+
+### 세대
+
+다른 Linux 배포판과 달리 NixOS 시스템 상태 업데이트는 번호가 있는 원자적 _세대_를 구성합니다.
+원하는 [시스템 구성](#configuration)을 적용하기 위해 `nixos-rebuild switch`를 실행할 때마다 Nix는 세대를 증가시킵니다.
+세대의 핵심 장점 중 하나는 시스템 상태의 [원자적 버전](#atomicity) 간에 원하는 대로 전환할 수 있다는 것입니다.
+
+### 원자적 시스템 업데이트
+
+NixOS [구성](#configuration)을 변경할 때마다 [`nixos-rebuild switch`][rebuild]를 실행하여 해당 구성을 적용할 수 있습니다.
+그렇게 하면 NixOS는 시스템 구성에 따라 설치하거나 업그레이드해야 하는 모든 [패키지][packages]를 설치하거나 업그레이드합니다.
+그리고 Nix의 경우와 마찬가지로 각 패키지는 처음부터 [실현][realised]되고 [파일 시스템 계층 표준][fhs]을 사용하는 시스템의 `/bin` 또는 `/usr/bin`과 같은 디렉터리가 아닌 [Nix 스토어][store]에 저장됩니다.
+
+### 롤백
+
+[시스템 업데이트](#atomicity)와 마찬가지로 NixOS를 사용하면 `nixos-rebuild switch --rollback`을 사용하여 시스템을 이전 세대로 롤백할 수 있습니다.
+롤백은 완전히 [원자적](#atomicity)이며 [패키지][packages], 시스템 구성 및 NixOS 구성에 지정된 기타 모든 것을 포함합니다.
+
+### 다중 사용자 지원
+
+NixOS는 [파일 시스템 계층 표준][fhs]을 따르지 않고 [패키지][packages]뿐만 아니라 [파생][derivations] 및 기타 아티팩트를 포함한 모든 것에 [Nix 스토어][store]를 사용합니다.
+이를 통해 NixOS는 무한한 수의 사용자 _프로필_을 우아한 방식으로 지원할 수 있습니다.
+예를 들어 동일한 NixOS 호스트의 두 명의 다른 사용자는 `/usr/bin/git`과 같은 위치에서 전역 `git`을 공유하는 대신 Nix 스토어 경로에서 `git` 실행 파일을 사용할 수 있으므로 서로 다른 버전의 [Git]을 사용할 수 있습니다.
+
+- `/nix/store/sglc12hc6pc68w5ppn2k56n6jcpaci16-git-2.38.1/bin/git`
+- `/nix/store/8nwsswymka208dpmsy09aydgffvg4bbi-git-2.38.0/bin/git`
+
+아래는 위 첫 번째 경로의 다이어그램입니다.
+
+<NixStorePath pkg="git-2.38.1" bin="git" />
+
+스토어 경로를 구성 요소로 나누어 보겠습니다.
+
+1. **루트 경로**는 기본적으로 `/nix/store`입니다.
+2. **해시**는 패키지를 빌드하는 데 사용된 [파생][derivations]에서 파생됩니다.
+3. **패키지 이름**은 패키지 작성자가 제공하는 임의의 슬러그입니다.
+
+## 구성
+
+대부분의 Linux 배포판에서는 셸 스크립트와 [`apt-get install`][apt]과 같은 임시 명령을 사용하여 원하는 시스템을 절차적으로 조립합니다.
+반대로 NixOS를 사용하면 [Nix 언어][lang]를 사용하여 원하는 시스템을 정의할 수 있습니다. 기본적으로 이는 `/etc/nixos`에 저장된 `configuration.nix` 파일에 있습니다.
+다음은 예제 구성입니다.
+
+```nix title="/etc/nixos/configuration.nix"
+{ pkgs, ... }: # Nix가 구성에 전달한 고정된 Nixpkgs 버전
+
+{
+  # Nix 플레이크 및 통합 Nix CLI 활성화
+  nix.settings = {
+    experimental-features = "nix-command flakes";
+  };
+
+  # 네트워킹 구성
+  networking.hostName = "justme-dev-box";
+
+  # OpenSSH 활성화
+  services.openssh.enable = true;
+
+  # 루트 파일 시스템
+  fileSystems."/" = {
+    device = "/dev/sda1";
+    fsType = "ext4";
+  };
+
+  # 사용자 만들기
+  users.users.justme = {
+    isNormalUser = true;
+    initialPassword = "changemeplz";
+  };
+
+  # CLI 도구, 언어 런타임, 셸 및 기타 원하는 패키지
+  environment.systemPackages = with pkgs; [
+    curl
+    jq
+    wget
+    git
+    python
+    openssl
+    zsh
+  ];
+}
+```
+
+이 명령은 위의 구성을 적용합니다.
+
+```shell title="NixOS 시스템 다시 빌드"
+nixos-rebuild switch
+```
+
+복잡한 셸 스크립트나 일련의 설치 또는 빌드 명령 없이 사양에 따라 전체 시스템을 빌드하라는 단일 지침만 있으면 됩니다.
+
+### 모듈
+
+_모듈_은 구성을 생성하도록 구성할 수 있는 Nix 코드 조각입니다.
+NixOS에서 모듈은 속성 집합을 가져와 다른 속성 집합을 반환하는 함수입니다.
+모듈의 기본 구조는 다음 코드 조각에서 볼 수 있습니다.
+
+```nix title="/etc/nixos/configuration.nix"
+{ lib, config, pkgs, ... }:
+
+{
+  imports = [];
+  config = {};
+  options = {};
+}
+```
+
+<Admonition info title="내 `configuration.nix`가 왜 다르게 보이나요?" id="why-configuration-nix">
+NixOS를 처음 보면 `/etc/nixos/`에 `configuration.nix` 파일이 있다는 것을 의심할 여지 없이 알게 될 것입니다.
+또한 다른 사람들의 NixOS 구성을 보면 이 정확한 구조를 보지 못할 수도 있습니다.
+
+첫째, 입력 집합을 줄일 수 있습니다(가장 극단적인 경우 `{ ... }`로).
+이것이 무엇을 하는지에 대한 자세한 내용은 [Nix 구문](/concepts/nix) 섹션을 참조하십시오.
+
+또한 NixOS 모듈에는 모듈이 `options`를 선언하지 않으면 `config` 키를 생략할 수 있는 몇 가지 구문 설탕이 있습니다.
+예를 들어 다음 두 모듈은 서로 동일합니다.
+
+```nix title="동일한 NixOS 모듈"
+# 모듈 1
+{ ... }:
+{
+  imports = [ ./my-fish-config.nix ];
+  programs.fish.enable = true;
+}
+
+# 모듈 2
+{ ... }:
+{
+  imports = [ ./my-fish-config.nix ];
+  config = {
+    programs.fish.enable = true;
+  };
+}
+```
+
+</Admonition>
+
+### 모듈 사용 방법
+
+먼저 NixOS [모듈 검색][search]을 통해 사용할 모듈과 사용 방법을 찾을 수 있습니다.
+Nix 모듈은 일반적으로 [선언적][declarative] 원칙을 따르므로 모듈이 실행되는 정확한 순서는 없습니다.
+대신 시스템의 원하는 결과를 설명하면 Nix가 이를 생성합니다.
+
+다음은 [nginx] 웹 서버를 설정하고 구성하는 방법의 예입니다.
+
+```nix title="nginx 웹 서버 예제"
+{ ... }:
+
+{
+  services.nginx = {
+    enable = true;
+    virtualHosts."default" = {
+      forceSSL = true;            # HTTP 클라이언트를 HTTPs 연결로 리디렉션
+      default = true;             # 호스트 이름에 관계없이 항상 이 호스트 사용
+      root = /var/www/my-website; # 제공할 웹 루트 설정
+    };
+  };
+}
+```
+
+## 릴리스
+
+매년 두 번의 주요 NixOS [릴리스][releases]가 있습니다.
+릴리스 슬러그는 `{year}.{month}` 형식을 갖므로 `22.05`는 2022년 5월, `20.09`는 2020년 9월 등을 나타냅니다.
+Nix를 사용하여 NixOS를 구성하므로 항상 특정 패키지와 종속성을 원하는 리비전으로 [고정][pin]할 수 있습니다.
+
+[apt]: https://en.wikipedia.org/wiki/APT_(software)
+[boot]: https://wiki.nixos.org/wiki/Bootloader
+[declarative]: /concepts/declarative
+[derivations]: /concepts/derivations
+[dpkg]: https://debian.org/doc/manuals/debian-faq/pkgtools
+[fhs]: https://en.wikipedia.org/wiki/Filesystem_Hierarchy_Standard
+[filesystem]: https://nixos.org/manual/nixos/stable/#ch-file-systems
+[git]: https://git-scm.com
+[kernel]: https://wiki.nixos.org/wiki/Linux_kernel
+[lang]: /concepts/nix-language
+[linux]: https://kernel.org
+[nginx]: https://nginx.org
+[nix]: /concepts/nix
+[openssh]: https://openssh.com
+[packages]: /concepts/packages
+[pin]: /concepts/pinning
+[pkg]: /concepts/package-management
+[realised]: /concepts/realisation
+[rebuild]: https://wiki.nixos.org/wiki/Nixos-rebuild
+[releases]: https://nixos.org/blog/announcements
+[search]: https://search.nixos.org/options
+[store]: /concepts/nix-store
+[window]: https://wiki.nixos.org/wiki/Category:Window_managers

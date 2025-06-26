@@ -1,0 +1,14 @@
+---
+title: 패키지
+wip: true
+snippet: |
+  [Nix 패키지 관리자](/concepts/nix)를 사용하여 빌드(및 잠재적으로 배포)되는 소프트웨어 번들입니다.
+related: ["derivations", "nix-store"]
+---
+
+Nix _패키지_는 [파생][derivations]을 사용하여 빌드되고 컴퓨터에 일종의 소프트웨어 또는 소프트웨어 종속성을 제공하는 자체 포함 번들입니다.
+패키지는 다른 패키지에 대한 종속성을 가질 수 있으며, 이는 해당 [클로저][closure]에 인코딩됩니다.
+각 패키지는 이름과 입력 해시로 인덱싱된 [Nix 스토어](/concepts/nix-store)의 고유한 경로에 있습니다.
+
+[closure]: /concepts/closures
+[derivations]: /concepts/derivations

@@ -1,0 +1,70 @@
+---
+title: FlakeHub
+snippet: |
+  재미있는 일을 하는 서비스입니다.
+related: ["ecosystem", "flakes", "pinning"]
+externalSources:
+  [
+    {
+      title: "FlakeHub 문서",
+      href: "https://flakehub.com/docs",
+      source: { title: "FlakeHub", href: "https://flakehub.com" },
+    },
+    {
+      title: "FlakeHub 소개",
+      href: "https://determinate.systems/posts/introducing-flakehub",
+      source:
+        {
+          title: "Determinate Systems 블로그",
+          href: "https://determinate.systems/posts",
+        },
+    },
+    {
+      title: "`fh`: FlakeHub용 CLI",
+      href: "https://determinate.systems/posts/flakehub-cli",
+      source:
+        {
+          title: "Determinate Systems 블로그",
+          href: "https://determinate.systems/posts",
+        },
+    },
+  ]
+---
+
+[FlakeHub]는 [Determinate Systems][detsys]에서 구축한 [Nix 플레이크][flakes]를 검색하고 게시하기 위한 플랫폼입니다.
+Nix 자체만으로는 제공하지 않는 다양한 기능을 제공합니다.
+
+- `~`(유연한 패치) 및 `=`(정확히 일치)와 같은 버전 수정자를 포함한 플레이크에 대한 [시맨틱 버전 관리][semver].
+- 다음과 같은 다양한 방법으로 Nix 플레이크 환경을 탐색하는 기능:
+  - 일반 텍스트 검색
+  - [모든 플레이크][all-flakes]
+  - [모든 조직][all-orgs]
+  - [`nixos`][label-nixos] 또는 [`rust`][label-rust]와 같은 레이블을 통해
+- 프로젝트에 대한 Actions 구성을 구축하는 데 도움이 되는 사용자 친화적인 [마법사][wizard]를 포함하여 GitHub Actions를 사용한 자동화된 플레이크 [게시][publishing].
+
+FlakeHub는 또한 FlakeHub API에 대해 다양한 작업을 수행하는 데 사용할 수 있는 [`fh`][fh]라는 CLI 도구를 제공합니다.
+
+<Admonition info open title="FlakeHub는 독점 플랫폼입니다">
+[Determinate Systems][detsys]에서는 FlakeHub가 [Nix 플레이크][flakes] 사용의 중요한 측면을 더욱 간단하고 재미있게 만든다고 생각하지만, 이는 독점 플랫폼이며 대부분 오픈 소스가 아닙니다.
+[시맨틱 버전 관리][semver] 및 [공개 플레이크][visibility] 게시를 포함하여 FlakeHub의 대부분의 기능은 무료입니다.
+
+즉, [GitHub]를 사용하지 않고 [Git]을 사용할 수 있는 것처럼 FlakeHub를 사용하지 않고 [Nix] 및 [Nix 플레이크][flakes]를 사용할 수 있습니다.
+
+</Admonition>
+
+[all-flakes]: https://flakehub.com/flakes
+[all-orgs]: https://flakehub.com/orgs
+[detsys]: https://determinate.systems
+[docs]: https://flakehub.com/docs
+[fh]: https://github.com/DeterminateSystems/fh
+[flakehub]: https://flakehub.com
+[flakes]: /concepts/flakes
+[git]: https://git-scm.com
+[github]: https://github.com
+[label-nixos]: https://flakehub.com/label/nixos
+[label-rust]: https://flakehub.com/label/rust
+[nix]: /concepts/nix
+[publishing]: https://determinate.systems/posts/introducing-flakehub#publish
+[semver]: https://flakehub.com/docs/concepts/semver
+[visibility]: https://flakehub.com/docs/concepts/visibility
+[wizard]: https://flakehub.com/new

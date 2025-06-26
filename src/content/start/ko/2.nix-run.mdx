@@ -1,0 +1,70 @@
+---
+title: Nix로 프로그램 실행
+order: 2
+summary:
+  [
+    "[Nixpkgs](/concepts/nixpkgs)에서 프로그램을 실행하려면 `nix run` 명령을 사용하세요",
+    "Nix 플레이크와 패키지에 대해 알아보세요",
+    "Nixpkgs에서 프로그램을 다운로드하고 실행하세요",
+  ]
+---
+
+지난 섹션에서는 [Determinate Nix Installer][nix-installer]를 사용하여 Nix를 설치했습니다.
+이제 본격적으로 Nix를 사용하여 실제 프로그램을 실행해 보겠습니다.
+멋진 [ponysay]를 실행해 보겠습니다.
+
+```shell title="Pass a string to Ponysay"
+echo "Hello Nix" | nix run "https://flakehub.com/f/NixOS/nixpkgs/*#ponysay"
+```
+
+:rocket: **성공**!
+콘솔에 매력적인 말의 인사가 표시될 것입니다.
+
+<Admonition warning title="시간이 좀 걸릴 수 있습니다" id="nix-run-loading">
+  `nix run`을 사용하여 프로그램을 처음 실행할 때는 속도가 느릴 가능성이 높습니다.
+  Nix가 프로그램의 [패키지][패키지]를 처음부터 빌드하거나 알려진 [캐시]에서 다운로드하여 [Nix 저장소][저장소]에 저장해야 하기 때문입니다. 이는 대부분의 [패키지 관리자][pkg]와는 대조적입니다.
+  대부분의 [패키지 관리자][pkg]는 tarball과 같은 미리 빌드된 아카이브를 다운로드하기 때문에 더 빠르게 설치합니다. Nix가 패키지를 다시 빌드할 필요가 없으므로 향후 `nix run` 호출은 즉시 실행됩니다.
+</Admonition>
+## 설명
+
+무슨 일이 일어났을까요? [Nix] CLI는 몇 가지 작업을 수행했습니다.
+
+- `nixpkgs` [플레이크 참조][참조]를 사용하여 Nix 코드를 가져오고 `ponysay` [플레이크 출력][출력]을 대상으로 했습니다(나중에 자세히 설명).
+- [`ponysay` 패키지][ponysay]를 빌드하고 결과를 [Nix 저장소][저장소]에 저장했습니다.
+- `ponysay` 패키지에서 `bin/ponysay`에 있는 실행 파일을 실행했습니다.
+
+Nix에서 모든 프로그램은 [패키지][패키지]의 일부입니다.
+패키지는 [Nix 언어][파생 언어]를 사용하여 빌드됩니다.
+`ponysay` 패키지에는 단일 프로그램(`ponysay`라고도 함)이 있지만, 패키지에는 여러 프로그램뿐 아니라 매뉴얼 페이지, 구성 파일 등이 포함될 수 있습니다.
+예를 들어 [`ffmpeg`][ffmpeg-pkg] 패키지는 [ffmpeg]와 [ffprobe]를 모두 제공합니다.
+
+<Admonition success open title="한 명령으로 설치 및 실행" id="nix-run-no-install">
+[`nix run`][nix-run]은 `nix install` 명령과 같은 다른 명령어를 필요로 하지 않는다는 것을 눈치채셨을 것입니다.
+이는 셸 스크립팅이나 개발 중인 도구를 실험하는 등의 사용 사례에 유용합니다.
+
+`nix run`에 대한 자세한 내용은 [Determinate Systems 블로그][블로그]의 [Nix를 사용하여 설치 단계 없이 소프트웨어 실행][nix-run-post]를 참조하세요.
+
+</Admonition>
+
+**축하합니다**!
+Nix CLI를 사용하여 프로그램을 실행하고 Nix의 핵심 개념에 대해 간략하게 알아보았습니다.
+이제 Nix 개발 환경을 살펴볼 준비가 되었습니다.
+
+[blog]: https://determinate.systems/posts
+[cache]: /concepts/caching
+[derivations]: /concepts/nix-language#derivations
+[ffmpeg]: https://ffmpeg.org
+[ffmpeg-pkg]: https://github.com/NixOS/nixpkgs/blob/master/pkgs/development/libraries/ffmpeg/generic.nix
+[ffprobe]: https://ffmpeg.org/ffprobe.html
+[nix]: /concepts/nix
+[nix-installer]: /concepts/nix-installer
+[nix-run]: https://nixos.org/manual/nix/stable/command-ref/new-cli/nix3-run
+[nix-run-post]: https://determinate.systems/posts/nix-run
+[nixpkgs]: /concepts/nixpkgs
+[output]: /concepts/flakes#outputs
+[packages]: /concepts/packages
+[ponysay]: https://github.com/erkin/ponysay
+[pkg]: /concepts/package-management
+[ref]: /concepts/flakes#references
+[store]: /concepts/nix-store
+[symlinked]: https://en.wikipedia.org/wiki/Symbolic_link

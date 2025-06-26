@@ -1,0 +1,56 @@
+---
+title: Nix 스토어
+wip: true
+snippet: |
+  [Nix](/concepts/nix)가 [패키지](/concepts/packages) 및 기타 아티팩트를 빌드, 저장 및 캐시하는 데 사용하는 디스크 내 저장 시스템입니다.
+related: ["caching", "derivations", "nix-language", "packages"]
+externalSources:
+  [
+    {
+      title: "Nix란 무엇인가?",
+      href: "https://shopify.engineering/what-is-nix",
+      source:
+        {
+          title: "Shopify 엔지니어링 블로그",
+          href: "https://shopify.engineering",
+        },
+    },
+    {
+      title: "Nix 스토어 내부 탐색",
+      href: "https://youtube.com/watch?v=foN0PfdRlNI",
+      source:
+        {
+          title: "Tweag의 YouTube 채널",
+          href: "https://youtube.com/@tweag",
+        },
+    },
+  ]
+---
+
+_Nix 스토어_는 기본적으로 루트가 `/nix/store`인 파일 시스템의 저장 시스템입니다.
+Nix 데몬은 Nix 스토어에 여러 가지를 저장합니다.
+
+- [파생][derivations]: `/nix/store/<hash>-my-package.drv`와 같이 `.drv`로 끝나는 독립 실행형 파일
+- [파생][derivations]의 결과물: `/nix/store/<hash>-my-package/`와 같이 빌드 출력을 포함하는 폴더
+- [패치][patches]: `/nix/store/<hash>-my-package.patch`와 같이 `.patch`로 끝나는 독립 실행형 파일
+
+## 스토어 경로
+
+Nix 스토어의 경로는 다음과 같은 구조를 갖습니다.
+
+<NixStorePath pkg="my-package-1.0" />
+
+스토어 경로를 구성 요소로 나누어 보겠습니다.
+
+1. **루트 경로**는 기본적으로 `/nix/store`입니다.
+2. **입력 해시**는 패키지를 빌드하는 데 사용된 [파생][derivations]에 대한 입력에서 파생됩니다.
+3. **패키지 이름**은 패키지 작성자가 제공합니다.
+
+Nix의 스토어 경로에 대해 유의해야 할 몇 가지 중요한 사항:
+
+- `/nix/store`의 루트 경로는 `/usr/bin`과 같은 다른 표준 시스템 경로와 충돌하지 않습니다.
+- 해시는 패키지에 대한 입력이 _조금이라도_ 다른 경우 동일한 이름을 가진 두 패키지가 완전히 다른 경로를 갖도록 보장합니다. 예를 들어 `my-package-1.0`에 대한 입력의 한 파일에서 한 글자를 변경하면 `/nix/store/1aq3wchnvv7yn0d6y1r3j129hjqmv2k3-my-package-1.0`과 같은 스토어 경로가 될 수 있습니다.
+- 패키지 이름은 기본적으로 임의적입니다. 원하는 명명 규칙을 제공할 수 있습니다. 패키지에 버전 개념이 없도록 하려면 `my-package`로 이름을 지정하고 입력 해시를 기준으로 구분할 수 있습니다.
+
+[derivations]: /concepts/derivations
+[patches]: https://nixos.org/manual/nixpkgs/stable/#sec-patches

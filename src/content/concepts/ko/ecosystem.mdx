@@ -1,0 +1,44 @@
+---
+title: 생태계
+wip: true
+snippet: |
+  [Nix](/concepts/nix)를 중심으로 구축되고 영감을 받은 방대한 프로젝트 집합체입니다.
+related: ["declarative", "nix", "nixos", "nixpkgs", "reproducibility"]
+externalSources:
+  [
+    {
+      title: "Nix 생태계",
+      href: "https://wiki.nixos.org/wiki/Nix_Ecosystem",
+      source: { title: "NixOS 위키", href: "https://wiki.nixos.org" },
+    },
+    {
+      title: "Nix 생태계를 주류로 바꾸는 방법",
+      href: "https://www.youtube.com/watch?v=Q0-0I0jKVwg",
+      source:
+        {
+          title: "Domen Kožar의 NixCon 2020 강연",
+          href: "https://cfp.nixcon.org/nixcon2020/talk/RKPT7U",
+        },
+    },
+  ]
+---
+
+_Nix 생태계_는 [Nix] 패키지 관리자와 [언어][language]를 핵심으로 하는 소프트웨어 생태계이지만 Nix를 기반으로 구축된 관련 도구 및 시스템의 방대한 네트워크도 포함합니다.
+공식적인 측면에서 Nix 생태계에는 [NixOS], [NixOps], [Hydra], [Home Manager][hm] 및 [기타 프로젝트][others]가 포함됩니다.
+비공식적인 측면에서 Nix 생태계에는 [언어][language] 라이브러리 및 도우미부터 [패키지 저장소][packages], 개발자 도구 등에 이르기까지 모든 것이 포함됩니다.
+
+관점에 따라 [GNU Guix][guix]와 같이 Nix에서 영감을 받은 프로젝트와 [재현성][reproducibility] 및 [선언적 구성][declarative]과 같은 원칙에 대한 Nix의 약속을 공유하는 프로젝트도 Nix 생태계 우산 아래에 포함될 수 있습니다.
+
+경계를 어디에 두든 Nix를 시작하면 소프트웨어 산업의 광범위한 영역에 접근할 수 있습니다.
+
+[declarative]: /concepts/declarative
+[guix]: http://guix.gnu.org
+[hm]: https://github.com/nix-community/home-manager
+[hydra]: https://github.com/NixOS/hydra
+[language]: /concepts/nix-language
+[nix]: /concepts/nix
+[nixops]: https://github.com/NixOS/nixops
+[nixos]: /concepts/nixos
+[others]: https://github.com/nix-community
+[packages]: /concepts/packages
+[reproducibility]: /concepts/reproducibility

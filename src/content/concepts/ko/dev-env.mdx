@@ -1,0 +1,37 @@
+---
+title: 개발 환경
+wip: true
+snippet: |
+  [Nix 언어](/concepts/nix-language)를 사용하여 정의할 수 있는 밀폐된 환경입니다.
+related: ["flakes"]
+externalSources:
+  [
+    {
+      title: "선언적이고 재현 가능한 개발자 환경",
+      href: "https://nix.dev/tutorials/declarative-and-reproducible-developer-environments",
+      source: { title: "nix.dev", href: "https://nix.dev" },
+    },
+    {
+      title: "개발 환경 설정",
+      href: "https://nix.dev/tutorials/dev-environment",
+      source: { title: "nix.dev", href: "https://nix.dev" },
+    },
+    {
+      title: "Nix를 사용한 일회용 개발 환경",
+      href: "https://monospacedmonologues.com/2022/06/throwaway-development-environments-with-nix",
+      source:
+        {
+          title: "Monospaced Monologues",
+          href: "https://monospacedmonologues.com",
+        },
+    },
+  ]
+---
+
+Nix _개발 환경_은 셸 시스템 환경을 구축하는 파생입니다.
+이 환경은 호스트로부터 [밀폐되어][hermetically] 분리되어 있으므로 다른 개발 환경에서 도구를 변경하거나 재정의할 수 없습니다.
+
+이를 통해 특정 프로젝트에 대한 모든 개발 도구(환경 [클로저][closure])를 개발 셸에 포함할 수 있으며, 이는 유사한 성격의 프로젝트(동일한 프로그래밍 언어, 동일한 종속성 집합 등)에 대한 개발 셸과도 분리됩니다.
+
+[hermetically]: /concepts/hermeticity
+[closure]: /concepts/closures
