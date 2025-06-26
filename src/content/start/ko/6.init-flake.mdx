@@ -1,0 +1,86 @@
+---
+title: 프로젝트를 플레이크로 전환
+order: 6
+summary:
+  [
+    "기존 프로젝트를 [플레이크](/concepts/flakes)로 변환합니다.",
+    "플레이크의 [개발 환경](/concepts/dev-env)을 사용합니다.",
+  ]
+---
+
+Zero to Nix의 이전 단계 중 일부에서는 [Nix 플레이크][flakes] 및 Nix [개발 환경][dev-env]에 대해 배웠습니다.
+자신의 프로젝트를 플레이크로 전환하는 것은 다소 까다로울 수 있으므로 [Determinate Systems][detsys]에서는 여러 시나리오에서 도움이 될 수 있는 도구를 만들었습니다. 바로 [FlakeHub] 플랫폼용 CLI인 [`fh`][fh]입니다.
+`fh`에는 다음 두 가지를 기반으로 `flake.nix` 파일을 만드는 [`fh init`][fh-init]이라는 유틸리티가 있습니다.
+
+1. 프로젝트 내용물
+1. 대화형 질문에 대한 답변
+
+Nix를 사용하여 `fh init`을 실행할 수 있습니다.
+
+```shell title="플레이크 초기화"
+nix run "https://flakehub.com/f/DeterminateSystems/fh/*" -- init
+```
+
+그러면 일련의 질문을 하고 프로젝트 루트에 `flake.nix` 파일을 작성하는 대화형 빌더가 시작됩니다(일부 질문에 예라고 답하면 다른 파일도 추가됩니다).
+새 플레이크를 생성했으면 어떤 출력이 있는지 확인할 수 있습니다.
+
+```shell title="플레이크 출력 표시"
+nix flake show
+```
+
+다음과 같이 표시되어야 합니다.
+
+```text title="플레이크 출력"
+git+file:///path/to/fh-init-example-project
+├───devShells
+│   ├───aarch64-darwin
+│   │   └───default: development environment 'nix-shell'
+│   ├───aarch64-linux
+│   │   └───default omitted (use '--all-systems' to show)
+│   ├───x86_64-darwin
+│   │   └───default omitted (use '--all-systems' to show)
+│   └───x86_64-linux
+│       └───default omitted (use '--all-systems' to show)
+└───schemas: unknown
+```
+
+`fh init`은 다양한 [언어 및 도구][handlers]를 지원합니다.
+예를 들어 프로젝트 루트에 [`Cargo.toml`][cargo-toml] 파일이 있는 경우 `fh init`은 [Rust] 프로젝트라고 추론하고 Nix [개발 환경][dev-env]에 Rust 종속성을 추가할지 묻습니다.
+예라고 답하면 생성된 `flake.nix`에는 `cargo` 빌드 도구와 기타 Rust 관련 도구가 포함됩니다.
+`fh init`은 현재 [`devShells`][dev-env] 출력만 지원합니다.
+즉, [패키지 출력][packages]과 같은 것이 아니라 개발 환경만 생성합니다.
+
+<Admonition
+  warning
+  title="`fh init`의 한계"
+  id="fh-init-limitations"
+>
+  `fh init`은 프로젝트에서 사용하는 언어와 도구를 추론하기 위해 "최선의 추측"을 기반으로 작동한다는 점에 유의하십시오.
+  항목을 놓치거나 잘못된 추측을 할 수 있습니다.
+  하지만 생성된 `flake.nix`가 최소한 추가로 수정할 수 있는 견고한 초기 템플릿 역할을 하기를 바랍니다.
+</Admonition>
+
+## 예제 프로젝트
+
+`fh init`을 테스트하는 데 사용할 수 있는 예제 프로젝트를 만들었습니다.
+
+```shell title="예제 프로젝트를 사용하여 fh init 테스트"
+git clone https://github.com/DeterminateSystems/fh-init-example-project
+cd fh-init-example-project
+nix run "https://flakehub.com/f/DeterminateSystems/fh/*" -- init
+
+# 프롬프트에 응답
+
+nix flake show
+```
+
+[cargo-toml]: https://doc.rust-lang.org/cargo/reference/manifest.html
+[detsys]: https://determinate.systems
+[dev-env]: /concepts/dev-env
+[fh]: https://github.com/DeterminateSystems/fh
+[fh-init]: https://github.com/determinateSystems/fh#initialize-a-new-flakenix-from-scratch
+[flakehub]: /concepts/flakehub
+[flakes]: /concepts/flakes
+[handlers]: https://github.com/DeterminateSystems/fh/tree/main/src/cli/cmd/init/handlers
+[packages]: /concepts/packages
+[rust]: https://rust-lang.org

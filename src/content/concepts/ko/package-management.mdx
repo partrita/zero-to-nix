@@ -1,0 +1,34 @@
+---
+title: 패키지 관리
+wip: true
+snippet: |
+  소프트웨어 [패키지](/concepts/packages)를 빌드하고 배포하는 기술
+related: ["packages"]
+externalSources:
+  [
+    {
+      title: "패키지 관리자",
+      href: "https://en.wikipedia.org/wiki/Package_manager",
+      source: { title: "위키백과", href: "https://wikipedia.org" },
+    },
+  ]
+---
+
+_패키지 관리_는 소프트웨어 [패키지][packages]를 빌드하고 배포하는 기술입니다.
+
+[Nix]는 [apt], [dpkg] 및 [yum]과 같은 패키지 관리자와 여러 가지 중요한 면에서 다릅니다.
+
+- Nix는 항상 해당 패키지의 전체 [클로저][closure] 또는 종속성 트리를 포함하여 모든 [패키지][packages]를 처음부터 빌드합니다.
+  그러나 종속성이 이미 [Nix 스토어][store] 또는 원격 캐시에 있는 경우 Nix는 이를 다시 빌드하는 대신 사용할 수 있으므로 Nix는 [증분 빌드][incremental]를 제공할 수 있습니다.
+- Nix에는 자체 패키지 빌드를 정의하는 데 사용할 수 있는 [언어][language](_Nix_라고도 함)가 있습니다.
+- Nix는 Linux, macOS 및 Windows WSL을 포함한 여러 플랫폼에서 작동합니다.
+
+[apt]: https://en.wikipedia.org/wiki/APT_(software)
+[closure]: /concepts/closures
+[dpkg]: https://man7.org/linux/man-pages/man1/dpkg.1.html
+[incremental]: /concepts/incremental-builds
+[language]: /concepts/nix-language
+[nix]: /concepts/nix
+[packages]: /concepts/packages
+[store]: /concepts/nix-store
+[yum]: https://es.wikipedia.org/wiki/Yum_(software)

@@ -1,0 +1,187 @@
+---
+title: 더 알아보기
+order: 8
+---
+
+이것으로 Zero to Nix 여정이 끝났습니다!
+여러분은 방금 많은 것을 이루셨습니다.
+
+- 컴퓨터에 Nix를 [설치][install]했습니다.
+- Nix를 사용하여 [프로그램]을 실행했습니다.
+- [Nix 개발 환경][env]을 탐색했습니다.
+- [Nixpkgs] 및 Nix [생태계]의 다른 곳에서 패키지를 [검색]했습니다.
+- [Nix 패키지][pkg]를 빌드했습니다.
+
+이것들은 몇 가지 예시일 뿐입니다.
+여러분이 시간을 내어 노력해 주셔서 정말 감사합니다.
+하지만 여러분의 Nix 여정이 계속 이어지기를 바랍니다.
+이 가이드에서는 빠른 시작 가이드의 범위를 넘어 새롭게 습득한 Nix 지식을 적용할 수 있는 몇 가지 영역을 제안합니다.
+
+## 컨테이너 이미지 빌드
+
+[Nix]는 [curl] 및 [Git]과 같은 표준 도구부터 [Vim] 플러그인, [Visual Studio Code][code] 확장 프로그램, 선호하는 언어로 작성하는 웹 서비스 등 다양한 [패키지]를 빌드할 수 있습니다.
+[빠른 시작][시작]에서 이러한 패키지 유형 중 몇 가지를 다루었습니다.
+Nix의 또 다른 강력한 기능은 [OCI] 호환 컨테이너 이미지를 빌드하여 [Docker] 및 [Podman]과 같은 도구를 대체할 수 있다는 것입니다(적어도 이미지 빌드 측면에서는).
+
+<ExternalSources
+  showTitle={false}
+  links={[
+    {
+      title: "Nix Docker examples",
+      href: "https://github.com/NixOS/nixpkgs/blob/master/pkgs/build-support/docker/examples.nix",
+      source: {
+        title: "Nixpkgs",
+        href: "https://github.com/NixOS/nixpkgs",
+      },
+    },
+    {
+      title: "Building and running Docker images",
+      href: "https://nix.dev/tutorials/nixos/building-and-running-docker-images",
+      source: {
+        title: "nix.dev",
+        href: "https://nix.dev",
+      },
+    },
+    {
+      title: "The `dockerTools` build functions",
+      href: "https://nixos.org/manual/nixpkgs/stable/#sec-pkgs-dockerTools",
+      source: {
+        title: "The Nixpkgs manual",
+        href: "https://nixos.org/manual/nixpkgs/stable",
+      },
+    },
+  ]}
+/>
+
+## NixOS를 운영 체제로 사용하세요
+
+[NixOS]는 Nix와 [재현성] 및 [선언적 구성][선언적]과 같은 핵심 원칙을 기반으로 구축된 [Linux] 배포판입니다.
+
+<ExternalSources
+  showTitle={false}
+  links={[
+    {
+      title: "NixOS: How it works and how to install it",
+      href: "https://youtube.com/watch?v=oPymb2-IXbg",
+      source: {
+        title: "DorianDotSlash on YouTube",
+        href: "https://youtube.com/@Doriandotslash",
+      },
+    },
+    {
+      title: "NixOS is the power user distro",
+      href: "https://youtube.com/watch?v=ck4J2Faa7Fc",
+      source: {
+        title: "DistroTube on YouTube",
+        href: "https://youtube.com/@DistroTube",
+      },
+    },
+    {
+      title: "Deploying NixOS using Terraform",
+      href: "https://nix.dev/tutorials/deploying-nixos-using-terraform#deploying-nixos-using-terraform",
+      source: {
+        title: "nix.dev",
+        href: "https://nix.dev",
+      },
+    },
+  ]}
+/>
+
+## 홈 환경 구성하기
+
+[홈 매니저][홈]은 Nix 기반으로 구축된 플러그인 기반 도구로, [Vim], [tmux], [Visual Studio Code][code], [Git], [gpg] 및 [Bash], [zsh], [fish]와 같은 셸을 포함하여 홈 환경에서 다양한 도구를 구성하는 데 사용할 수 있습니다.
+
+<ExternalSources
+  showTitle={false}
+  links={[
+    {
+      title: "From nix-env to Home Manager",
+      href: "https://youtube.com/watch?v=PmD8Qe8z2sY",
+      source: {
+        title: "Burke Libbey's YouTube channel",
+        href: "https://youtube.com/@burkelibbey6583",
+      },
+    },
+    {
+      title: "Declarative management of dotfiles with Nix and Home Manager",
+      href: "https://bekk.christmas/post/2021/16/dotfiles-with-nix-and-home-manager",
+      source: {
+        title: "Bekk Christmas' blog",
+        href: "https://bekk.christmas",
+      },
+    },
+    {
+      title: "Home Manager configuration options",
+      href: "https://nix-community.github.io/home-manager/options.xhtml",
+      source: {
+        title: "The Home Manager manual",
+        href: "https://nix-community.github.io/home-manager",
+      },
+    },
+  ]}
+/>
+
+## 지속적 통합
+
+빠른 시작 과정에서 [Nix 개발 환경][env]에 대해 알아보았습니다.
+Nix 개발 환경은 크로스 플랫폼이며 완벽하게 [재현 가능][재현성]하기 때문에 [지속적 통합][ci] 환경에서 매우 유용합니다.
+
+<ExternalSources
+  showTitle={false}
+  links={[
+    {
+      title: "Continuous Integration with GitHub Actions",
+      href: "https://nix.dev/tutorials/continuous-integration-github-actions",
+      source: {
+        title: "nix.dev",
+        href: "https://nix.dev",
+      },
+    },
+    {
+      title: "Streamline your GitHub Actions dependencies using Nix",
+      href: "https://determinate.systems/posts/nix-github-actions",
+      source: {
+        title: "The Determinate Systems blog",
+        href: "https://determinate.systems/posts",
+      },
+    },
+    {
+      title:
+        "Setting up Buildkite for Nix-based projects using Terraform and GCP",
+      href: "https://tweag.io/blog/2020-07-08-buildkite-for-nix-ci",
+      source: {
+        title: "The Tweag blog",
+        href: "https://tweag.io/blog",
+      },
+    },
+  ]}
+/>
+
+[bash]: https://gnu.org/software/bash
+[ci]: https://en.wikipedia.org/wiki/Continuous_integration
+[code]: https://code.visualstudio.com
+[curl]: https://curl.se
+[declarative]: /concepts/declarative
+[docker]: https://docker.com
+[ecosystem]: /concepts/ecosystem
+[env]: /start/nix-develop
+[fish]: https://fishshell.com
+[git]: https://git-scm.com
+[gpg]: https://gnupg.org
+[home]: https://github.com/nix-community/home-manager
+[install]: /start/install
+[linux]: https://www.kernel.org/
+[nix]: /concepts/nix
+[nixos]: /concepts/nixos
+[nixpkgs]: /concepts/nixpkgs
+[oci]: https://opencontainers.org
+[packages]: /concepts/packages
+[pkg]: /start/nix-build
+[programs]: /start/nix-run
+[podman]: https://podman.io
+[reproducibility]: /concepts/reproducibility
+[searched]: /start/nix-search
+[start]: /start
+[tmux]: https://github.com/tmux/tmux
+[vim]: https://www.vim.org
+[zsh]: https://zsh.org

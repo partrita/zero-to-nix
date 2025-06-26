@@ -1,0 +1,31 @@
+---
+title: 종속성 고정
+wip: true
+snippet: |
+  [Nix](/concepts/nix) 종속성을 특정 리비전으로 고정합니다.
+related: ["derivations", "flakes"]
+externalSources:
+  [
+    {
+      title: "재현성을 향하여: Nixpkgs 고정",
+      href: "https://nix.dev/tutorials/first-steps/towards-reproducibility-pinning-nixpkgs",
+      source: { title: "nix.dev", href: "https://nix.dev" },
+    },
+  ]
+---
+
+종속성을 _고정_한다는 것은 Nix가 사용할 정확한 리비전을 지정하는 행위를 의미합니다.
+이는 Nix의 [재현성](/concepts/reproducibility) 보장과 관련하여 특히 흥미롭습니다.
+
+Nix 종속성을 특정 리비전으로 고정하면 변경할 수 없는 동일한 입력을 기반으로 빌드의 동일한 출력을 얻을 수 있다는 것이 보장됩니다.
+이는 서로 다른 개발자 간에 또는 개발 환경과 프로덕션 환경 간에 환경을 공유할 때 특히 유용합니다.
+
+종속성 고정은 플레이크 파일의 `inputs` 섹션에서 수행할 수 있습니다.
+
+```nix title="flake.nix"
+{
+  inputs = {
+    nixpkgs.url = "git+https://github:nixos/nixpkgs?rev=fdc8ef970de2b4634e1b3dca296e1ed918459a9e";
+  };
+}
+```

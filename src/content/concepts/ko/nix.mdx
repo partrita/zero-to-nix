@@ -1,0 +1,92 @@
+---
+title: Nix
+wip: true
+snippet: |
+  CLI, [패키지 관리자](/concepts/package-management) 및 [프로그래밍 언어](/concepts/nix-language)
+related: ["nix-language", "nixos", "nixpkgs"]
+externalSources:
+  [
+    { title: "공식 Nix 웹사이트", href: "https://nixos.org" },
+    {
+      title: "Nix 패키지 관리자",
+      href: "https://wiki.nixos.org/wiki/Nix_package_manager",
+      source: { title: "NixOS 위키", href: "https://wiki.nixos.org" },
+    },
+    {
+      title: "Nix 저장소",
+      href: "https://github.com/NixOS/nix",
+      source: { title: "GitHub", href: "https://github.com" },
+    },
+    {
+      title: "Nix란 무엇인가?",
+      href: "https://shopify.engineering/what-is-nix",
+      source:
+        {
+          title: "Shopify 엔지니어링 블로그",
+          href: "https://shopify.engineering",
+        },
+    },
+    {
+      title: "Nix (패키지 관리자)",
+      href: "https://en.wikipedia.org/wiki/Nix_(package_manager)",
+      source: { title: "위키백과", href: "https://wikipedia.org" },
+    },
+  ]
+---
+
+[*Nix*][nix]는 여러 가지를 의미하기 때문에 다소 혼란스러운 용어일 수 있습니다.
+
+1. 순수하고 함수형인 [프로그래밍 언어][lang]
+2. [Nix CLI](#cli)
+3. 전체 Nix [패키지 관리 시스템][package-management]
+
+이 모든 것은 밀접하게 관련되어 있으며 단일 도구로 생각해야 합니다.
+이 문서에서는 Nix의 세 가지 측면을 각각 살펴보겠습니다.
+
+<Admonition info open title="Nix와 오픈 소스" id="nix-oss">
+Nix 프로젝트는 완전히 오픈 소스이며 대부분 [GitHub]의 [`NixOS`][nixos-org] 조직 내에서 개발됩니다.
+일반적으로 상업적 사용에 대해 매우 관대한 [LGPL 2.1][license]에 따라 라이선스가 부여됩니다.
+
+Determinate Systems는 과거에 수많은 재능 있는 개인과 함께 오픈 소스 프로젝트로서 Nix에 적극적으로 기여했으며 Nix를 개선하려는 [미션][mission]의 일환으로 계속 그렇게 할 것입니다.
+또한 기업용으로 의도된 Nix의 다운스트림 배포판인 [Determinate Nix][det-nix]를 만들었습니다.
+</Admonition>
+
+## Nix CLI
+
+현재 활성화된 두 가지 다른 Nix CLI가 있습니다.
+
+- [통합 Nix CLI](#unified-cli)는 현재 실험적이지만 [Determinate Systems][ds]의 관점에서 Nix 사용에 권장됩니다.
+  모든 Nix 기능을 단일 `nix` 실행 파일로 래핑하고 [플레이크][flakes]를 지원합니다.
+- [원래 Nix CLI](#original-cli)는 현재 표준이지만 [Determinate Systems][ds]의 관점에서 Nix 사용에 권장되지 _않습니다_.
+
+### 통합 CLI
+
+_통합 CLI_는 `nix`라는 단일 실행 파일만 포함하는 아직 실험적인 Nix 사용 방식입니다.
+_모든_ Nix 기능은 이 도구에 래핑되어 있으며, 이전 `nix-build` 도구 대신 [패키지][packages] 빌드를 위한 `nix build`, 이전 `nix-shell` 도구 대신 Nix [개발 환경][env] 활성화를 위한 `nix develop`, 이전 `nix-store` 도구 대신 [Nix 스토어][store] 관리를 위한 `nix store` 등의 명령이 포함됩니다.
+통합 CLI는 아직 공식적이지 않으므로 Nix 구성에서 `experimental-features` 목록에 `nix-command`를 추가하여 명시적으로 활성화해야 합니다.
+
+[Determinate Nix Installer][install]가 Nix 구성에 이를 설치하고 활성화하므로 여기서는 통합 CLI 설정을 다루지 않습니다.
+
+### 원래 CLI
+
+Nix의 _원래 CLI_는 여전히 공식 CLI이지만 위에서 언급했듯이 두 가지 이유로 새로운 Nix 사용자에게 권장되지 않습니다.
+
+1. 플레이크가 시작되기 전에 만들어졌기 때문에 [Nix 플레이크][flakes]와 호환되지 않습니다.
+1. [패키지][packages] 빌드를 위한 `nix-build`, Nix [개발 환경][env]을 위한 `nix-shell`, [Nix 스토어][store] 관리를 위한 `nix-store` 등 다양한 CLI 도구를 배워야 하므로 [통합 CLI](#unified-cli)에 비해 상당한 인지적 부담을 줍니다.
+
+[Determinate Nix Installer][install]는 기본적으로 [통합 CLI](#unified-cli)를 활성화하지만 원래 CLI의 도구는 계속 액세스할 수 있도록 합니다.
+
+[det-nix]: https://docs.determinate.systems/determinate-nix
+[ds]: https://determinate.systems
+[env]: /concepts/dev-env
+[flakes]: /concepts/flakes
+[github]: https://github.com
+[install]: /concepts/nix-installer
+[lang]: /concepts/nix-language
+[license]: https://github.com/nixOS/nix?tab=LGPL-2.1-1-ov-file
+[mission]: https://determinate.systems/posts/we-want-to-make-nix-better
+[nix]: https://nixos.org
+[nixos-org]: https://github.com/NixOS
+[packages]: /concepts/packages
+[package-management]: /concepts/package-management
+[store]: /concepts/nix-store

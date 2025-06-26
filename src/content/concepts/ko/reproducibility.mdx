@@ -1,0 +1,54 @@
+---
+title: 재현성
+wip: true
+snippet: |
+  동일한 빌드 입력에서 동일한 빌드 출력을 일관되고 반복적으로 생성하는 기능입니다.
+related: ["pinning"]
+externalSources:
+  [
+    {
+      title: "빌드는 언제 재현 가능한가?",
+      href: "https://reproducible-builds.org/docs/definition",
+      source:
+        {
+          title: "재현 가능한 빌드 프로젝트",
+          href: "https://reproducible-builds.org",
+        },
+    },
+    {
+      title: "재현성",
+      href: "https://en.wikipedia.org/wiki/Reproducibility",
+      source: { title: "위키백과", href: "https://wikipedia.org" },
+    },
+    {
+      title: "재현 가능한 빌드",
+      href: "https://en.wikipedia.org/wiki/Reproducible_builds",
+      source: { title: "위키백과", href: "https://wikipedia.org" },
+    },
+  ]
+---
+
+_재현성_은 동일한 입력에 대한 작업이 동일한 출력을 산출하는 소프트웨어 설계 개념입니다.
+이는 해시가 빌드 입력을 기반으로 하기 때문에 Nix에게 중요한 속성이며, 따라서 동일한 입력이 동일한 빌드 출력을 산출한다는 것이 보장되어야 합니다.
+
+```nix title="예제 파생"
+{ stdenv, fetchGit }:
+
+stdenv.mkDerivation {
+  name = "my-package";
+  src = fetchgit {
+    url = "https://github.com/DeterminateSystems/riff";
+    sha256 = "sha256-7mnx7J0AacL2P2mNuNNB+kKE7VR8nniVG+PSrwpZixE=";
+  };
+}
+```
+
+위 코드는 `fetchgit`과 `mkDerivation`이라는 _두 가지_ 파생으로 구성됩니다.
+
+`mkDerivation`의 재현성은 `fetchgit`의 출력이 특정 해시에 고정되어 있기 때문에 보장됩니다.
+그리고 `mkDerivation` 자체는 네트워크에 액세스할 수 없고 호스트로부터 [밀폐적](/concepts/hermeticity)으로 봉인되어 있기 때문에 빌드에 불순물이 존재할 수 없습니다.
+
+`fetchgit`의 출력은 해당 출력이 특정 해시에 고정되어 있기 때문에 보장됩니다.
+네트워크에 액세스할 _수_ 있지만 가져오기의 출력이 사용자가 제공한 출력 해시와 일치하지 않으면 빌드에 실패합니다.
+
+Nix 빌드의 재현성이 포장 양파처럼 계층화되어 있음을 알 수 있습니다.

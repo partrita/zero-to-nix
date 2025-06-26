@@ -1,0 +1,35 @@
+---
+title: Nixpkgs
+wip: true
+snippet: |
+  [Nix 언어](/concepts/nix-language)를 위한 수만 개의 Nix [패키지](/concepts/packages) 및 빌드 유틸리티 모음입니다.
+related: ["channels", "flakes", "nix", "nix-language", "nixos"]
+externalSources:
+  [
+    {
+      title: "Nixpkgs 저장소",
+      href: "https://github.com/NixOS/nixpkgs",
+      source: { title: "GitHub", href: "https://github.com" },
+    },
+    {
+      title: "Nixpkgs 매뉴얼",
+      href: "https://nixos.org/manual/nixpkgs/stable/",
+      source:
+        { title: "공식 Nix 문서", href: "https://nixos.org" },
+    },
+    {
+      title: "Nixpkgs",
+      href: "https://wiki.nixos.org/wiki/Nixpkgs",
+      source: { title: "NixOS 위키", href: "https://wiki.nixos.org" },
+    },
+  ]
+---
+
+_Nixpkgs_ ( "Nix 패키지"로 발음)는 [Nix] 표현식, 패키지 (누가 생각이나 했을까요...), Nix 생태계를 위한 빌드 유틸리티의 방대한 모음입니다.
+때로는 "Nix 표준 라이브러리" (또는 Nix stdlib)라고도 합니다.
+
+Nixpkgs는 80,000개 이상의 패키지 정의와 이 패키지 세트를 유지 관리하는 유틸리티를 포함하는 모노 저장소입니다.
+또한 [NixOS](/concepts/nixos) 모듈과 전체 Nix 시스템을 빌드하고 배포하는 데 필요한 모든 것을 포함합니다.
+Nix 생태계의 많은 도구는 이 표준 라이브러리에 의존하여 작동합니다.
+
+[nix]: https://nixos.org

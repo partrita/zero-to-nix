@@ -1,0 +1,22 @@
+---
+title: 밀폐성
+wip: true
+snippet: |
+  호스트로부터 빌드 환경을 격리하여 [재현 가능한](/concepts/reproducibility) 빌드를 보장합니다.
+related: ["dev-env"]
+externalSources:
+  [
+    {
+      title: "밀폐성",
+      href: "https://bazel.build/basics/hermeticity",
+      source: { title: "Bazel 문서", href: "https://bazel.build" },
+    },
+  ]
+---
+
+_밀폐성_은 다양한 메커니즘을 통해 호스트 시스템으로부터 빌드를 격리하는 Nix 빌드의 속성입니다.
+이는 동일한 소스 입력 세트가 항상 동일한 빌드 출력에 매핑되는 시스템을 만듭니다.
+호스트의 변경 사항이 빌드에 영향을 미칠 수 없기 때문입니다.
+
+밀폐되지 않은 시스템은 "불순하다"고 하며, 이는 입력 세트 외부의 변경 사항이 빌드 결과에 영향을 미칠 수 있음을 의미합니다.
+이는 Nix의 "순수성" 속성과 반대됩니다.

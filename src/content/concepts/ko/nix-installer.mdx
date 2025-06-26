@@ -1,0 +1,35 @@
+---
+title: Determinate Nix Installer
+wip: true
+snippet: |
+  [Determinate Systems](https://determinate.systems)에서 만든 빠르고 안정적인 [Nix](/concepts/nix) 설치 프로그램입니다.
+related: ["flakes"]
+externalSources:
+  [
+    {
+      title: "Determinate Nix Installer 레포지토리",
+      href: "https://github.com/DeterminateSystems/nix-installer",
+      source: { title: "GitHub", href: "https://github.com" },
+    },
+    { title: "Rust", href: "https://rust-lang.org" },
+  ]
+---
+
+[Determinate Nix Installer][install]는 [Determinate Systems][ds]에서 만든 빠르고 안정적인 Nix 설치 프로그램입니다.
+현재 Linux와 macOS를 모두 지원합니다.
+
+{/* <Brief id="nix-installer-differences" /> */}
+
+## Determinate Nix Installer 사용
+
+다음 명령을 사용하여 시스템에서 설치 프로그램을 실행할 수 있습니다.
+
+```shell title="Nix를 설치하는 하나의 명령"
+curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+```
+
+보다 완전한 가이드는 Zero to Nix의 [시스템에서 Nix 실행하기][start]를 참조하십시오.
+
+[ds]: https://determinate.systems
+[install]: https://github.com/DeterminateSystems/nix-installer
+[start]: /start/install
