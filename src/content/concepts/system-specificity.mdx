@@ -1,17 +1,17 @@
 ---
-title: System specificity
+title: 시스템 특정성 (번역됨)
 wip: true
 snippet: |
-  The fact that all Nix derivations have a `system` property that describes which architecture the package is built on
+  모든 Nix 파생에는 패키지가 빌드되는 아키텍처를 설명하는 `system` 속성이 있다는 사실입니다. (이하 내용은 원본 유지)
 related: ["derivations", "packages"]
 ---
 
-In Nix, the term _system specificity_ expresses the fact that all Nix [derivations] have a `system` attribute that specifies which system the derivation is built on.
-In order to realize a Nix derivation into a [package], each derivation in the package's closure needs to be supported on the target system.
-So if you want to build the package `foo` on an `x86_64-linux` system, any dependency of the `foo` derivation needs to be supported on `x86_64-linux`.
+Nix에서 _시스템 특정성_이라는 용어는 모든 Nix [파생][derivations]에 파생이 빌드되는 시스템을 지정하는 `system` 속성이 있다는 사실을 나타냅니다.
+Nix 파생을 [패키지][package]로 실현하려면 패키지 클로저의 각 파생이 대상 시스템에서 지원되어야 합니다.
+따라서 `x86_64-linux` 시스템에서 `foo` 패키지를 빌드하려면 `foo` 파생의 모든 종속성이 `x86_64-linux`에서 지원되어야 합니다.
 
-System specificity is essential to Nix being a truly multi-platform system.
-Because all derivations&mdash;and thus all packages&mdash;are system specific, things like Nix [development environments][env] and [NixOS] configurations are also system specific.
+시스템 특정성은 Nix가 진정한 다중 플랫폼 시스템이 되는 데 필수적입니다.
+모든 파생, 따라서 모든 패키지는 시스템 특정적이므로 Nix [개발 환경][env] 및 [NixOS] 구성과 같은 것도 시스템 특정적입니다.
 
 [derivations]: /concepts/derivations
 [env]: /concepts/dev-env

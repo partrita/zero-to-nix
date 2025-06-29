@@ -1,17 +1,17 @@
 ---
-title: Sandboxing
+title: 샌드박싱 (번역됨)
 wip: true
 snippet: |
-  Isolating the Nix build process from everything else on your system
+  Nix 빌드 프로세스를 시스템의 다른 모든 것과 격리합니다. (이하 내용은 원본 유지)
 related: ["derivations", "nix-store", "packages", "realisation"]
 ---
 
-Whenever Nix builds anything, it _sandboxes_ that process from everything else on the host system.
-Nix builds are sandboxed for a variety of reasons:
+Nix가 무언가를 빌드할 때마다 해당 프로세스를 호스트 시스템의 다른 모든 것과 _샌드박스_ 처리합니다.
+Nix 빌드는 다양한 이유로 샌드박스 처리됩니다.
 
-1. The ensure [reproducibility].
-   Sandboxing ensures that no system state on the host machine affects the build outcomes.
-1. To maintain strict [provenance].
+1. [재현성]을 보장합니다.
+   샌드박싱은 호스트 시스템의 시스템 상태가 빌드 결과에 영향을 미치지 않도록 보장합니다.
+1. 엄격한 [출처]를 유지합니다.
 
 [reproducibility]: /concepts/reproducibility
 [provenance]: /concepts/provenance
