@@ -14,14 +14,13 @@ externalSources:
   ]
 ---
 
-_Package management_ is the art of building and distributing software [packages].
+**패키지 관리**는 소프트웨어 [패키지]를 빌드하고 배포하는 기술입니다.
 
-[Nix] is different from package managers like [apt], [dpkg], and [yum] in several important ways:
+[Nix]는 [apt], [dpkg], [yum] 같은 다른 패키지 관리자와 몇 가지 중요한 면에서 다릅니다.
 
-- Nix always builds all [packages] from scratch, including the entire [closure], or dependency tree, of that package.
-  But if a dependency is already present in the [Nix store][store] or in a remote cache, Nix can use that instead of rebuilding it, which means that Nix can provide [incremental builds][incremental].
-- Nix has a [language]&mdash;also called _Nix_&mdash;that you can use to define your own package builds
-- Nix works on several platforms, including Linux, macOS, and Windows WSL.
+* Nix는 항상 모든 [패키지]를 처음부터 빌드하며, 여기에는 해당 패키지의 전체 [클로저], 즉 종속성 트리까지 포함됩니다. 하지만 종속성이 이미 [Nix 스토어][store]나 원격 캐시에 존재한다면, Nix는 다시 빌드하는 대신 이를 사용할 수 있어 [점진적 빌드][incremental]가 가능합니다.
+* Nix는 자체적인 **언어**([Nix]라고도 불림)를 가지고 있어 자신만의 패키지 빌드를 정의할 수 있습니다.
+* Nix는 Linux, macOS, Windows WSL을 포함한 여러 플랫폼에서 작동합니다.
 
 [apt]: https://en.wikipedia.org/wiki/APT_(software)
 [closure]: /concepts/closures

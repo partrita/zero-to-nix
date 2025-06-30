@@ -7,23 +7,23 @@ summary: ["시스템에서 Nix를 깨끗하게 제거하기"]
 Zero to Nix 빠른 시작 시작 부분에서는 [Determinate Systems][ds]의 빠르고 안정적인 [Determinate Nix Installer][nix-installer]를 사용하여 Nix를 [설치]했습니다.
 앞으로도 Nix를 계속 사용하시기를 바라지만, 어떤 이유로든 Nix를 제거해야 하는 경우 다음 명령을 사용하여 제거할 수 있습니다.
 
-```shell title="Uninstall Nix"
+```shell title="Nix 삭제"
 /nix/nix-installer uninstall
 ```
 
 안내에 따라 요청된 변경 사항을 승인하세요.
 설치 프로그램에서 요청하는 변경 사항은 다음과 같습니다.
 
-- Delete the directory tree under `/nix`
-- Delete the [Nix] CLI tool
-- Delete all Nix-specific users and groups
-- Delete the Nix configuration file at `/etc/nix/nix.conf`
+* `/nix` 아래의 디렉터리 트리를 삭제합니다.
+* [Nix] CLI 도구를 삭제합니다.
+* 모든 Nix 전용 사용자 및 그룹을 삭제합니다.
+* `/etc/nix/nix.conf`에 있는 Nix 설정 파일을 삭제합니다.
 
-Once the Determinate Nix Installer is done, you can verify that uninstallation has succeeded by confirming that directories like `/nix` and `~/.nix-profile` have been removed from your system:
+Determinate Nix Installer가 완료되면 `/nix` 및 `~/.nix-profile`와 같은 디렉터리가 시스템에서 제거되었는지 확인하여 제거가 성공했음을 검증할 수 있습니다.
 
-```shell title="Verify that uninstallation has succeeded"
-ls /nix # error
-ls ~/.nix-profile # error
+```shell title="제거 성공 여부 확인"
+ls /nix # 에러 발생
+ls ~/.nix-profile # 에러 발생
 ```
 
 [ds]: https://determinate.systems

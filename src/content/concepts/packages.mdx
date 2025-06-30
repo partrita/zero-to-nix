@@ -6,9 +6,9 @@ snippet: |
 related: ["derivations", "nix-store"]
 ---
 
-Nix _packages_ are self-contained bundles that are built using [derivations] and provide some kind of software or dependencies of software on your computer.
-A package can have dependencies on other packages, which are encoded in its [closure].
-Each package lives at a unique path in the [Nix store](/concepts/nix-store) indexed by its name and its input hash.
+**Nix 패키지**는 [파생물][derivations]을 사용하여 빌드되는 독립적인 번들로, 컴퓨터에 특정 소프트웨어 또는 소프트웨어 종속성을 제공합니다.
+
+패키지는 다른 패키지에 대한 종속성을 가질 수 있으며, 이는 해당 [클로저]에 인코딩됩니다. 각 패키지는 이름과 입력 해시로 인덱싱된 [Nix 스토어](https://www.google.com/search?q=/concepts/nix-store) 내의 고유한 경로에 존재합니다.
 
 [closure]: /concepts/closures
 [derivations]: /concepts/derivations
