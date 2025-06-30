@@ -1,40 +1,40 @@
 ---
-title: Realisation
+title: 실현 (번역됨)
 wip: true
 snippet: |
-  The process whereby Nix turns the build instruction in a [derivation](/concepts/derivations) into a build output in the [Nix store](/concepts/nix-store)
+  Nix가 [파생](/concepts/derivations)의 빌드 지침을 [Nix 저장소](/concepts/nix-store)의 빌드 출력으로 바꾸는 프로세스입니다. (이하 내용은 원본 유지)
 related: ["derivations", "nix-store", "packages"]
 externalSources:
   [
     {
-      title: "How to learn Nix, part 29: derivations in detail",
+      title: "Nix를 배우는 방법, 29부: 파생 자세히 보기",
       href: "https://ianthehenry.com/posts/how-to-learn-nix/derivations-in-detail",
       source:
         {
-          title: "Ian Henry's blog",
+          title: "Ian Henry의 블로그",
           href: "https://ianthehenry.com/posts/how-to-learn-nix",
         },
     },
   ]
 ---
 
-_Realisation_ is the process whereby a Nix [derivation] is transformed into a [package].
-While a derivation is essentially a plan for a package, realisation is the build process turns that plan into an actual output directory full of content.
+_실현_은 Nix [파생][derivation]이 [패키지][package]로 변환되는 프로세스입니다.
+파생은 본질적으로 패키지에 대한 계획이지만 실현은 해당 계획을 콘텐츠로 가득 찬 실제 출력 디렉터리로 바꾸는 빌드 프로세스입니다.
 
-## `.drv` files
+## `.drv` 파일
 
-When you run [`nix build`][nix-build] to build a package, the Nix CLI first looks at the [`derivation`][derivation] function for the function and transforms it into an intermediate [`.drv` file][drv], which is essentially a formal representation of the `derivation` function.
-All `.drv` files are stored in the [Nix store][store] with a hashed path, such as `/nix/store/m2nb4d0pfydr8bq5ww1yqbrkvvf18zbl-perl-5.36.0.drv`, which ensures that _any_ change in a `derivation` function results in a new `.drv` file with a new path.
-The CLI then uses the `.drv` file as the blueprint for the actual build process, which always builds the package's entire dependency tree.
+패키지를 빌드하기 위해 [`nix build`][nix-build]를 실행하면 Nix CLI는 먼저 함수의 [`derivation`][derivation] 함수를 살펴보고 이를 중간 [`.drv` 파일][drv]로 변환합니다. 이 파일은 본질적으로 `derivation` 함수의 공식적인 표현입니다.
+모든 `.drv` 파일은 `/nix/store/m2nb4d0pfydr8bq5ww1yqbrkvvf18zbl-perl-5.36.0.drv`와 같이 해시된 경로를 사용하여 [Nix 저장소][store]에 저장되며, 이는 `derivation` 함수의 _모든_ 변경 사항이 새 경로를 가진 새 `.drv` 파일을 생성하도록 보장합니다.
+그런 다음 CLI는 `.drv` 파일을 실제 빌드 프로세스의 청사진으로 사용하며, 이 프로세스는 항상 패키지의 전체 종속성 트리를 빌드합니다.
 
-## The build process
+## 빌드 프로세스
 
-Once Nix has built a `.drv` file for the derivation, it uses the encoded instructions in the file to actually build the package in a [sandboxed] environment, which essentially means that realisation doesn't rely on or affect any global state on your machine, such as configuration files in `/etc`.
-Everything required for the build process is drawn from:
+Nix가 파생에 대한 `.drv` 파일을 빌드하면 파일의 인코딩된 지침을 사용하여 실제로 [샌드박스][sandboxed] 환경에서 패키지를 빌드합니다. 이는 본질적으로 실현이 `/etc`의 구성 파일과 같이 시스템의 전역 상태에 의존하거나 영향을 미치지 않음을 의미합니다.
+빌드 프로세스에 필요한 모든 것은 다음에서 가져옵니다.
 
-1. The build instructions in the derivation. For example, commands like `cat`, `touch`, `mkdir`, and `mv`.
-1. Artifacts from the [Nix store][store].
-   If you write a derivation with [Git] as a build input, for example, the realisation process builds Git and stores the resulting package in the [Nix store][store] (if it isn't already built and stored there) and uses that package when the `git` command is invoked in the build logic, rather than a "global" Git at a path like `/usr/bin/git`.
+1. 파생의 빌드 지침. 예를 들어 `cat`, `touch`, `mkdir` 및 `mv`와 같은 명령입니다.
+1. [Nix 저장소][store]의 아티팩트.
+   예를 들어 빌드 입력으로 [Git]을 사용하여 파생을 작성하면 실현 프로세스는 Git을 빌드하고 결과 패키지를 [Nix 저장소][store]에 저장하고(아직 빌드되어 저장되지 않은 경우) 빌드 논리에서 `git` 명령이 호출될 때 `/usr/bin/git`과 같은 경로의 "전역" Git 대신 해당 패키지를 사용합니다.
 
 [derivation]: /concepts/derivations
 [drv]: https://nixos.org/guides/nix-pills/our-first-derivation

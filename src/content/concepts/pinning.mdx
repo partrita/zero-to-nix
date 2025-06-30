@@ -1,26 +1,26 @@
 ---
-title: Pinning dependencies
+title: 종속성 고정 (번역됨)
 wip: true
 snippet: |
-  Fixing a [Nix](/concepts/nix) dependency to a specific revision
+  [Nix](/concepts/nix) 종속성을 특정 리비전으로 수정합니다. (이하 내용은 원본 유지)
 related: ["derivations", "flakes"]
 externalSources:
   [
     {
-      title: "Toward reproducibility: pinning Nixpkgs",
+      title: "재현성을 향하여: Nixpkgs 고정",
       href: "https://nix.dev/tutorials/first-steps/towards-reproducibility-pinning-nixpkgs",
       source: { title: "nix.dev", href: "https://nix.dev" },
     },
   ]
 ---
 
-_Pinning_ a dependency refers to the act of specifying an exact revision for Nix to use.
-This is particularly interesting in relation to Nix's [reproducibility](/concepts/reproducibility) guarantees.
+종속성을 _고정_하는 것은 Nix가 사용할 정확한 리비전을 지정하는 행위를 의미합니다.
+이는 Nix의 [재현성](/concepts/reproducibility) 보장과 관련하여 특히 흥미롭습니다.
 
-When you pin Nix dependencies to a specific revision you are guaranteed to get the same outputs of builds, based on the same inputs, which cannot change.
-This is particularly useful when sharing environments between different developers, or between a development and production environment.
+Nix 종속성을 특정 리비전으로 고정하면 변경할 수 없는 동일한 입력을 기반으로 빌드의 동일한 출력을 얻을 수 있다는 보장이 있습니다.
+이는 서로 다른 개발자 간에 또는 개발 환경과 프로덕션 환경 간에 환경을 공유할 때 특히 유용합니다.
 
-Pinning dependencies can be done in the `inputs` section of the flakes file:
+종속성 고정은 플레이크 파일의 `inputs` 섹션에서 수행할 수 있습니다.
 
 ```nix title="flake.nix"
 {

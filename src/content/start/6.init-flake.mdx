@@ -1,34 +1,31 @@
 ---
-title: Turn your project into a flake
+title: 프로젝트를 플레이크로 전환 (번역됨)
 order: 6
 summary:
   [
-    "Transform an existing project into a [flake](/concepts/flakes)",
-    "Use the flake's [development environment](/concepts/dev-env)",
+    "기존 프로젝트를 [플레이크](/concepts/flakes)로 변환합니다.",
+    "플레이크의 [개발 환경](/concepts/dev-env)을 사용합니다.",
   ]
 ---
 
-In some of the previous steps in Zero to Nix you learned about [Nix flakes][flakes] and Nix [development environments][dev-env].
-Turning your own projects into flakes can be somewhat tricky, so we at [Determinate Systems][detsys] have created a tool that can help in many scenarios: [`fh`][fh], the CLI for the [FlakeHub] platform.
-`fh` has a utility called [`fh init`][fh-init] that creates a `flake.nix` file based on two things:
+Zero to Nix의 이전 단계 중 일부에서는 [Nix 플레이크][flakes]와 Nix [개발 환경][dev-env]에 대해 배웠습니다.
+자신의 프로젝트를 플레이크로 전환하는 것은 다소 까다로울 수 있으므로, [Determinate Systems][detsys]에서는 여러 시나리오에서 도움이 될 수 있는 도구인 [`fh`][fh]([FlakeHub] 플랫폼용 CLI)를 만들었습니다.
+`fh`에는 프로젝트 내용과 대화형 질문에 대한 사용자의 답변이라는 두 가지를 기반으로 `flake.nix` 파일을 만드는 [`fh init`][fh-init]이라는 유틸리티가 있습니다.
 
-1. The contents of your project
-1. Your responses to its interactive questions
-
-You can run `fh init` using Nix:
+Nix를 사용하여 `fh init`을 실행할 수 있습니다.
 
 ```shell title="Initialize your flake"
 nix run "https://flakehub.com/f/DeterminateSystems/fh/*" -- init
 ```
 
-This will start up an interactive builder that asks you a series of questions and then writes a `flake.nix` file into the root of your project (plus some other files if you say yes to some of those questions).
-Once you've generated a new flake, you can see which outputs it has:
+이렇게 하면 일련의 질문을 하고 프로젝트 루트에 `flake.nix` 파일(및 일부 질문에 예라고 답하면 다른 파일)을 작성하는 대화형 빌더가 시작됩니다.
+새 플레이크를 생성했으면 어떤 출력이 있는지 확인할 수 있습니다.
 
 ```shell title="Display the flake's outputs"
 nix flake show
 ```
 
-You should see something like this:
+다음과 같은 내용이 표시되어야 합니다.
 
 ```text title="Flake outputs"
 git+file:///path/to/fh-init-example-project
@@ -44,27 +41,26 @@ git+file:///path/to/fh-init-example-project
 └───schemas: unknown
 ```
 
-`fh init` supports a wide variety of [languages and tools][handlers].
-If your project has a [`Cargo.toml`][cargo-toml] file in the root, for example, then `fh init` infers that it's a [Rust] project and asks if you want to add Rust dependencies to your Nix [development environment][dev-env].
-If you say yes, then the generated `flake.nix` will include the `cargo` build tool plus some other Rust-specific tools.
-Note that `fh init` currently only supports [`devShells`][dev-env] outputs.
-That is, it only generates a development environment for you, not things like [package outputs][packages].
+`fh init`은 다양한 [언어 및 도구][handlers]를 지원합니다.
+예를 들어 프로젝트 루트에 [`Cargo.toml`][cargo-toml] 파일이 있는 경우 `fh init`은 [Rust] 프로젝트라고 추론하고 Nix [개발 환경][dev-env]에 Rust 종속성을 추가할지 묻습니다.
+예라고 답하면 생성된 `flake.nix`에는 `cargo` 빌드 도구와 기타 Rust 관련 도구가 포함됩니다.
+`fh init`은 현재 [`devShells`][dev-env] 출력만 지원합니다.
+즉, [패키지 출력][packages]과 같은 것은 생성하지 않고 개발 환경만 생성합니다.
 
 <Admonition
   warning
-  title="The limitations of `fh init`"
+  title="`fh init`의 한계"
   id="fh-init-limitations"
 >
-  Be aware that `fh init` operates on a "best-guess" basis to infer which
-  languages and tools you use in your project. It's possible that it will miss
-  things or make incorrect guesses. But we hope that the `flake.nix` that it
-  creates for you will at least serve as a solid initial template that you can
-  modify further.
+  `fh init`은 프로젝트에서 사용하는 언어와 도구를 추론하기 위해 "최선의 추측"을 기반으로 작동합니다.
+  항목을 놓치거나 잘못된 추측을 할 수 있습니다. 하지만
+  생성되는 `flake.nix`가 최소한
+  추가로 수정할 수 있는 견고한 초기 템플릿 역할을 하기를 바랍니다.
 </Admonition>
 
-## Example project
+## 예제 프로젝트
 
-We've created an example project that you can use to test out `fh init`:
+`fh init`을 테스트하는 데 사용할 수 있는 예제 프로젝트를 만들었습니다.
 
 ```shell title="Test out fh init using the example project"
 git clone https://github.com/DeterminateSystems/fh-init-example-project

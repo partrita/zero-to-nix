@@ -1,8 +1,8 @@
 ---
-title: NixOS
+title: NixOS (번역됨)
 wip: true
 snippet: |
-  A [Linux](https://www.kernel.org/) distribution based on the [Nix](/concepts/nix) package manager and guided by Nix's core principles
+  A [Linux](https://www.kernel.org/) distribution based on the [Nix](/concepts/nix) package manager and guided by Nix's core principles (이하 내용은 원본 유지)
 related: ["nix", "nix-language", "nixpkgs"]
 externalSources:
   [
@@ -16,187 +16,187 @@ externalSources:
   ]
 ---
 
-_NixOS_ is a [Linux] distribution based on [Nix].
-It's unique amongst distributions because it enables you to use the [Nix language][lang] to [declaratively configure][declarative] your operating system in a [`configuration.nix` file](#configuration).
-And that configurability runs quite deep, including things like the system's [boot loader][boot], the [filesystem], [window managers][window], [kernel modules][kernel], services like [OpenSSH], and much more.
+NixOS는 Nix를 기반으로 하는 [Linux] 배포판입니다. 다른 배포판들과는 다르게 [Nix 언어][lang]를 사용하여 [`configuration.nix` 파일](configuration)에서 운영 체제를 [선언적으로 구성][declarative]할 수 있습니다. 이러한 구성 가능성은 시스템의 [부트로더][boot], [파일 시스템][filesystem], [창 관리자][window], [커널 모듈][kernel], [OpenSSH]와 같은 서비스 등 매우 깊은 수준까지 적용됩니다.
 
-In addition to being a fundamentally [configurable](#configuration) distribution, Nix provides NixOS with a variety of unique [features](#features), such as [atomic system updates](#atomicity), [system rollbacks](#rollbacks), and robust [multi-user support](#multi-user).
+-----
 
-## The role of Nix
+근본적으로 [구성 가능한](configuration) 배포판일 뿐만 아니라, Nix는 NixOS에 [원자적 시스템 업데이트](atomicity), [시스템 롤백](rollbacks), 강력한 [다중 사용자 지원](multi-user)과 같은 다양하고 고유한 [기능](features)을 제공합니다.
 
-Everything in a NixOS system is configured using the [Nix language][lang] and the NixOS [module system](#modules).
-Rather than installing [packages] and setting up your system in an ad-hoc way, you can [declare][declarative] which specific system you'd like to have&mdash;networking stack, filesystem, users, and more&mdash;and Nix builds the system for you from the ground up, installing all the required [packages], providing necessary configuration files, and making other declared changes.
+-----
 
-## Features
+## Nix의 역할
 
-NixOS uses [Nix] as its [package manager][pkg] rather than [APT], [dpkg], or any of the other options for Linux.
-Nix enables NixOS to provide a range of unique features.
+NixOS 시스템의 모든 것은 [Nix 언어][lang]와 NixOS [모듈 시스템](modules)을 사용하여 구성됩니다. [패키지]를 설치하고 임시 방식으로 시스템을 설정하는 대신, 네트워킹 스택, 파일 시스템, 사용자 등 원하는 특정 시스템을 [선언][declarative]할 수 있으며, Nix는 필요한 모든 [패키지]를 설치하고 필요한 구성 파일을 제공하며 선언된 다른 변경 사항을 적용하여 시스템을 처음부터 구축합니다.
 
-### Generations
+-----
 
-Unlike other Linux distributions, updates to NixOS system state constitute atomic _generations_ with a number.
-Each time you run `nixos-rebuild switch` to apply your desired [system configuration](#configuration), Nix increments the generation.
-One of the core advantages of generations is that you can switch between [atomic versions](#atomicity) of your system state at will.
+## 기능
 
-### Atomic system updates
+NixOS는 [APT], [dpkg] 또는 다른 Linux 옵션 대신 [Nix]를 [패키지 관리자][pkg]로 사용합니다. Nix는 NixOS에 다양한 고유 기능을 제공합니다.
 
-Any time you change your NixOS [configuration](#configuration), you can apply that configuration by running [`nixos-rebuild switch`][rebuild].
-When you do that, NixOS installs or upgrades any [packages] that need to be installed or upgraded according to your system configuration.
-And as is always the case with Nix, each package is [realised] from scratch and stored in the [Nix store][store] rather than in directories like `/bin` or `/usr/bin`, as on systems that use the [Filesystem Hierarchy Standard][fhs].
+-----
 
-### Rollbacks
+### 세대 (Generations)
 
-As with [system updates](#atomicity), NixOS enables you to roll your system back to a previous generation using `nixos-rebuild switch --rollback`.
-Rollbacks are fully [atomic](#atomicity) and include [packages], system configuration, and anything else specified in the NixOS configuration.
+다른 Linux 배포판과 달리, NixOS 시스템 상태에 대한 업데이트는 번호가 매겨진 원자적 세대를 구성합니다. 원하는 [시스템 구성](configuration)을 적용하기 위해 `nixos-rebuild switch`를 실행할 때마다 Nix는 세대를 증가시킵니다. 세대의 핵심 장점 중 하나는 시스템 상태의 [원자적 버전](atomicity) 사이를 자유롭게 전환할 수 있다는 것입니다.
 
-### Multi-user support
+-----
 
-NixOS doesn't follow the [Filesystem Hierarchy Standard][fhs], instead using the [Nix store][store] for everything, including not just [packages] but also [derivations] and other artifacts.
-This enables NixOS to support an indefinite number of user _profiles_ in an elegant way.
-Two different users on the same NixOS host can use different versions of [Git], for example, because instead of sharing a global `git` in a location like `/usr/bin/git`, two different users can use `git` executables from Nix store paths instead:
+### 원자적 시스템 업데이트
 
-- `/nix/store/sglc12hc6pc68w5ppn2k56n6jcpaci16-git-2.38.1/bin/git`
-- `/nix/store/8nwsswymka208dpmsy09aydgffvg4bbi-git-2.38.0/bin/git`
+NixOS [구성](configuration)을 변경할 때마다 [`nixos-rebuild switch`][rebuild]를 실행하여 해당 구성을 적용할 수 있습니다. 이 작업을 수행하면 NixOS는 시스템 구성에 따라 설치 또는 업그레이드해야 하는 모든 [패키지]를 설치하거나 업그레이드합니다. 그리고 Nix에서 항상 그렇듯이, 각 패키지는 처음부터 [구현]되어 [파일 시스템 계층 표준][fhs]을 사용하는 시스템에서처럼 `/bin` 또는 `/usr/bin`과 같은 디렉터리가 아닌 [Nix 스토어][store]에 저장됩니다.
 
-Below is a diagram of the first path above:
+-----
+
+### 롤백
+
+[시스템 업데이트](atomicity)와 마찬가지로, NixOS는 `nixos-rebuild switch --rollback`을 사용하여 시스템을 이전 세대로 롤백할 수 있도록 합니다. 롤백은 완전히 [원자적](atomicity)이며 [패키지], 시스템 구성 및 NixOS 구성에 지정된 기타 모든 것을 포함합니다.
+
+-----
+
+### 다중 사용자 지원
+
+NixOS는 [파일 시스템 계층 표준][fhs]을 따르지 않고, [패키지]뿐만 아니라 [파생물][derivations] 및 기타 아티팩트를 포함한 모든 것을 [Nix 스토어][store]에 사용합니다. 이를 통해 NixOS는 우아한 방식으로 무한한 수의 사용자 프로필을 지원할 수 있습니다. 예를 들어, 동일한 NixOS 호스트의 두 다른 사용자는 다른 버전의 [Git]을 사용할 수 있습니다. 이는 `/usr/bin/git`와 같은 전역 `git`을 공유하는 대신, 두 다른 사용자가 Nix 스토어 경로에서 `git` 실행 파일을 사용할 수 있기 때문입니다.
+
+  - `/nix/store/sglc12hc6pc68w5ppn2k56n6jcpaci16-git-2.38.1/bin/git`
+  - `/nix/store/8nwsswymka208dpmsy09aydgffvg4bbi-git-2.38.0/bin/git`
+
+위는 첫 번째 경로의 다이어그램입니다:
 
 <NixStorePath pkg="git-2.38.1" bin="git" />
 
-Let's break store paths down into their constituent elements:
+저장소 경로를 구성 요소로 나누어 봅시다:
 
-1. The **root path** is `/nix/store` by default.
-2. The **hash** is derived from the [derivation][derivations] used to build the package.
-3. The **package name** is an arbitrary slug provided by the package creator.
+1.  **루트 경로**는 기본적으로 `/nix/store`입니다.
+2.  **해시**는 패키지를 빌드하는 데 사용된 [파생물][derivations]에서 파생됩니다.
+3.  **패키지 이름**은 패키지 생성자가 제공한 임의의 슬러그입니다.
 
-## Configuration
+-----
 
-With most Linux distributions, you assemble your desired system in a procedural way using shell scripts and ad-hoc commands like [`apt-get install`][apt].
-By contrast, NixOS enables you to define your desired system using the [Nix language][lang]. By default, this is in a `configuration.nix` file stored in `/etc/nixos`.
-Here's an example configuration:
+## 구성
+
+대부분의 Linux 배포판에서는 셸 스크립트와 [`apt-get install`][apt]과 같은 임시 명령을 사용하여 원하는 시스템을 절차적으로 조립합니다. 대조적으로, NixOS는 [Nix 언어][lang]를 사용하여 원하는 시스템을 정의할 수 있도록 합니다. 기본적으로 이는 `/etc/nixos`에 저장된 `configuration.nix` 파일에 있습니다. 다음은 구성 예시입니다:
 
 ```nix title="/etc/nixos/configuration.nix"
-{ pkgs, ... }: # A pinned version of Nixpkgs passed to the configuration by Nix
+{ pkgs, ... }: # Nix에 의해 구성으로 전달된 Nixpkgs의 고정된 버전
 
 {
-  # Enable Nix flakes and the unified Nix CLI
-  nix.settings = {
-    experimental-features = "nix-command flakes";
-  };
+  # Nix flakes 및 통합 Nix CLI 활성화
+  nix.settings = {
+    experimental-features = "nix-command flakes";
+  };
 
-  # Networking configuration
-  networking.hostName = "justme-dev-box";
+  # 네트워킹 구성
+  networking.hostName = "justme-dev-box";
 
-  # Enable OpenSSH
-  services.openssh.enable = true;
+  # OpenSSH 활성화
+  services.openssh.enable = true;
 
-  # Root filesystem
-  fileSystems."/" = {
-    device = "/dev/sda1";
-    fsType = "ext4";
-  };
+  # 루트 파일 시스템
+  fileSystems."/" = {
+    device = "/dev/sda1";
+    fsType = "ext4";
+  };
 
-  # Create a user
-  users.users.justme = {
-    isNormalUser = true;
-    initialPassword = "changemeplz";
-  };
+  # 사용자 생성
+  users.users.justme = {
+    isNormalUser = true;
+    initialPassword = "changemeplz";
+  };
 
-  # CLI tools, language runtimes, shells, and other desired packages
-  environment.systemPackages = with pkgs; [
-    curl
-    jq
-    wget
-    git
-    python
-    openssl
-    zsh
-  ];
+  # CLI 도구, 언어 런타임, 셸 및 기타 원하는 패키지
+  environment.systemPackages = with pkgs; [
+    curl
+    jq
+    wget
+    git
+    python
+    openssl
+    zsh
+  ];
 }
 ```
 
-This command applies the configuration above:
+이 명령은 위 구성을 적용합니다:
 
-```shell title="Rebuild your NixOS system"
+```shell title="NixOS 시스템 재구축"
 nixos-rebuild switch
 ```
 
-No complex shell scripts, no sequence of install or build commands, just a single instruction to build the entire system according to your specifications.
+복잡한 셸 스크립트도, 설치 또는 빌드 명령의 순서도 없이, 단지 사양에 따라 전체 시스템을 빌드하라는 단일 지침만 있으면 됩니다.
 
-### Modules
+-----
 
-A _module_ is a piece of Nix code that you can configure to produce configuration.
-In NixOS, a module is a function that takes an attribute set and returns another attribute set.
-The basic anatomy of a module can be seen in this code snippet:
+### 모듈
+
+모듈은 구성을 생성하도록 구성할 수 있는 Nix 코드 조각입니다. NixOS에서 모듈은 속성 세트를 가져와 다른 속성 세트를 반환하는 함수입니다. 모듈의 기본 구조는 다음 코드 스니펫에서 볼 수 있습니다:
 
 ```nix title="/etc/nixos/configuration.nix"
 { lib, config, pkgs, ... }:
 
 {
-  imports = [];
-  config = {};
-  options = {};
+  imports = [];
+  config = {};
+  options = {};
 }
 ```
 
-<Admonition info title="Why does my `configuration.nix` look different?" id="why-configuration-nix">
-When you first have a look at NixOS you will undoubtedly see a `configuration.nix` file in `/etc/nixos/`.
-Furthermore, if you look at other people's NixOS configurations, you might not see this exact structure.
+<Admonition info title="`configuration.nix`가 다르게 보이는 이유는 무엇인가요?" id="why-configuration-nix">
+NixOS를 처음 접할 때 `/etc/nixos/`에 `configuration.nix` 파일이 있는 것을 분명히 보게 될 것입니다.
+또한, 다른 사람들의 NixOS 구성을 보면 이 정확한 구조가 아닐 수도 있습니다.
 
-For one, the input set can be shortened (in the most extreme case to just `{ ... }`).
-See the [Nix syntax](/concepts/nix) section for details on what this does.
+우선, 입력 세트는 단축될 수 있습니다 (가장 극단적인 경우 `{ ... }`로). 이에 대한 자세한 내용은 [Nix 구문](https://www.google.com/search?q=/concepts/nix) 섹션을 참조하십시오.
 
-Additionally, there is some syntactic sugar around NixOS modules, which allow you to omit the `config` key, if your module does not declare any `options`.
-As an example, these two modules are equivalent to each other.
+또한, NixOS 모듈에는 모듈이 `options`를 선언하지 않는 경우 `config` 키를 생략할 수 있는 일부 구문 설탕이 있습니다. 예를 들어, 다음 두 모듈은 서로 동등합니다.
 
-```nix title="Equivalent NixOS modules"
-# Module 1
+```nix title="동등한 NixOS 모듈"
+# 모듈 1
 { ... }:
 {
-  imports = [ ./my-fish-config.nix ];
-  programs.fish.enable = true;
+  imports = [ ./my-fish-config.nix ];
+  programs.fish.enable = true;
 }
 
-# Module 2
+# 모듈 2
 { ... }:
 {
-  imports = [ ./my-fish-config.nix ];
-  config = {
-    programs.fish.enable = true;
-  };
+  imports = [ ./my-fish-config.nix ];
+  config = {
+    programs.fish.enable = true;
+  };
 }
 ```
 
 </Admonition>
 
-### How to use modules
+-----
 
-First up, you can find modules to use and how to use them via the NixOS [module search][search].
-Nix modules generally follow the [declarative] principle, meaning that there's no precise order in which modules are executed.
-Instead, you describe the desired outcome of a system, which Nix then produces for you.
+### 모듈 사용 방법
 
-Following is an example of how to setup and configure the [nginx] web server.
+먼저, NixOS [모듈 검색][search]을 통해 사용할 모듈과 사용 방법을 찾을 수 있습니다. Nix 모듈은 일반적으로 [선언적] 원칙을 따르며, 이는 모듈이 실행되는 정확한 순서가 없다는 것을 의미합니다. 대신, 시스템의 원하는 결과를 설명하면 Nix가 이를 생성해 줍니다.
 
-```nix title="nginx web server example"
+다음은 [nginx] 웹 서버를 설정하고 구성하는 예시입니다.
+
+```nix title="nginx 웹 서버 예시"
 { ... }:
 
 {
-  services.nginx = {
-    enable = true;
-    virtualHosts."default" = {
-      forceSSL = true;            # Redirect HTTP clients to an HTTPs connection
-      default = true;             # Always use this host, no matter the host name
-      root = /var/www/my-website; # Set the web root to serve
-    };
-  };
+  services.nginx = {
+    enable = true;
+    virtualHosts."default" = {
+      forceSSL = true;            # HTTP 클라이언트를 HTTPs 연결로 리디렉션
+      default = true;             # 호스트 이름에 관계없이 항상 이 호스트 사용
+      root = /var/www/my-website; # 웹 루트 설정
+    };
+  };
 }
 ```
 
-## Releases
+-----
 
-There are two major NixOS [releases] per year.
-Release slugs have the form `{year}.{month}`, so `22.05` corresponds to May 2022, `20.09` corresponds to September 2020, and so on.
-Because you configure NixOS using Nix, you can always [pin] specific packages and dependencies to whichever revisions you like.
+## 릴리스
 
+NixOS는 1년에 두 번의 주요 [릴리스]가 있습니다. 릴리스 슬러그는 `{연도}.{월}` 형식이며, `22.05`는 2022년 5월, `20.09`는 2020년 9월에 해당합니다. Nix를 사용하여 NixOS를 구성하기 때문에 항상 특정 패키지와 종속성을 원하는 리비전에 [고정]할 수 있습니다.
 [apt]: https://en.wikipedia.org/wiki/APT_(software)
 [boot]: https://wiki.nixos.org/wiki/Bootloader
 [declarative]: /concepts/declarative
